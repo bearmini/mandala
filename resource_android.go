@@ -14,11 +14,6 @@ import (
 // #include "resource_android.h"
 import "C"
 
-var (
-	// The path in which the framework will search for resources.
-	ResourcePath string = "res"
-)
-
 func loadResource(activity unsafe.Pointer, filename string) ([]byte, error) {
 	apkPath := C.GoString(C.getPackageName((*C.ANativeActivity)(activity)))
 
@@ -31,7 +26,7 @@ func loadResource(activity unsafe.Pointer, filename string) ([]byte, error) {
 
 	// Iterate through the files in the archive.
 	for _, f := range r.File {
-		if f.Name == filepath.Join(ResourcePath, filename) {
+		if f.Name == filepath.Join("res", filename) {
 			rc, err := f.Open()
 			if err != nil {
 				return nil, err
